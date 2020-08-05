@@ -1,41 +1,29 @@
 package DyamicProgramming;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LCS_DP {
 	static Scanner scn = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		String s1 = "abcd";
-		String s2 = "agcfd";
-		long start, end;
-		
-		start = System.currentTimeMillis();
-		System.out.println(start);
+		String s1 = "ABCD";
+		String s2 = "AGCFB";
+
 		System.out.println(LCSRecursive(s1, s2));
-		end = System.currentTimeMillis();
-		System.out.println("Total time for above result: " + (end - start) / 1000);
 
-		start = System.currentTimeMillis();
 		System.out.println(LCSRecursiveVIDX(s1, s2, 0, 0));
-		end = System.currentTimeMillis();
-		System.out.println("Total time for above result: " + (end - start) / 1000);
 
-		start = System.currentTimeMillis();
 		System.out.println(LCSRecursiveVIDXTopDown(s1, s2, 0, 0, new int[s1.length()][s2.length()]));
-		end = System.currentTimeMillis();
-		System.out.println("Total time for above result: " + (end - start) / 1000);
 
-		start = System.currentTimeMillis();
 		System.out.println(LCSRecursiveVIDXBottomUp(s1, s2));
-		end = System.currentTimeMillis();
-		System.out.println("Total time for above result: " + (end - start) / 1000);
-		
-		start = System.currentTimeMillis();
-		System.out.println("This is LCSRecursiveTopDOwnOnceAgain "+LCSRecursiveTopDownOnceAgain(s1, s2, 0, 0, new int[s1.length()][s2.length()]));
-		end = System.currentTimeMillis();
-		System.out.println("Total time for above result: " + (end - start) / 1000);
 
+		System.out.println(LCSRecursiveTopDownOnceAgain(s1, s2, 0, 0, new int[s1.length()][s2.length()]));
+		int strg2[][] = new int[s1.length()][s2.length()];
+		for (int val[] : strg2) {
+			Arrays.fill(val, -1);
+		}
+		System.out.println(LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(s1, s2, 0, 0, strg2));
 	}
 
 	private static int LCSRecursive(String s1, String s2) {
@@ -106,28 +94,47 @@ public class LCS_DP {
 		return strg[0][0];
 	}
 
-	
 	private static int LCSRecursiveTopDownOnceAgain(String s1, String s2, int vidx1, int vidx2, int strg[][]) {
-		
-		if(s1.length()==vidx1 || s2.length()==vidx2)
+
+		if (s1.length() == vidx1 || s2.length() == vidx2)
 			return 0;
-		char ch1=s1.charAt(vidx1);
-		char ch2=s2.charAt(vidx2);
-		
-		if(strg[vidx1][vidx2]!=0)
+		char ch1 = s1.charAt(vidx1);
+		char ch2 = s2.charAt(vidx2);
+
+		if (strg[vidx1][vidx2] != 0)
 			return strg[vidx1][vidx2];
-		
-		if(ch1==ch2)
-			return LCSRecursiveTopDownOnceAgain(s1, s2, vidx1+1, vidx2+1, strg)+1;
+
+		if (ch1 == ch2)
+			return LCSRecursiveTopDownOnceAgain(s1, s2, vidx1 + 1, vidx2 + 1, strg) + 1;
 		else {
-			int leftCall=LCSRecursiveTopDownOnceAgain(s1, s2, vidx1, vidx2+1, strg);
-			int rightCall=LCSRecursiveTopDownOnceAgain(s1, s2, vidx1+1, vidx2, strg);
-			return strg[vidx1][vidx2]=Math.max(leftCall, rightCall);
+			int leftCall = LCSRecursiveTopDownOnceAgain(s1, s2, vidx1, vidx2 + 1, strg);
+			int rightCall = LCSRecursiveTopDownOnceAgain(s1, s2, vidx1 + 1, vidx2, strg);
+			return strg[vidx1][vidx2] = Math.max(leftCall, rightCall);
 		}
-		
-		
-		
-		
-		
+	}
+
+	
+	
+	//THE CODE GIVEN BELOW IS HELPFUL TO ERADICATE TWO MEANINGS TO 0 VALUE OF CELL WHEREIN THE DISCREPANCY OF RESULT NOT YET EVALUATED
+	//AND THE LENGTH OF LCS = 0 IS DISTINGUISHED, OR ELSE THIS DISCREPANCY SIMPLY FAILED THE DP TO EXECUTE
+	private static int LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(String s1, String s2, int vidx1, int vidx2,
+			int strg[][]) {
+
+		if (s1.length() == vidx1 || s2.length() == vidx2)
+			return 0;
+		char ch1 = s1.charAt(vidx1);
+		char ch2 = s2.charAt(vidx2);
+
+		if (strg[vidx1][vidx2] != -1)
+			return strg[vidx1][vidx2];
+
+		if (ch1 == ch2)
+			return LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(s1, s2, vidx1 + 1, vidx2 + 1, strg) + 1;
+		else {
+			int leftCall = LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(s1, s2, vidx1, vidx2 + 1, strg);
+			int rightCall = LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(s1, s2, vidx1 + 1, vidx2, strg);
+			return strg[vidx1][vidx2] = Math.max(leftCall, rightCall);
+		}
+
 	}
 }
