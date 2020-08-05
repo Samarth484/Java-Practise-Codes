@@ -7,8 +7,8 @@ public class LCS_DP {
 	static Scanner scn = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		String s1 = "ABCD";
-		String s2 = "AGCFB";
+		String s1 = "abcd";
+		String s2 = "agcfd";
 
 		System.out.println(LCSRecursive(s1, s2));
 
@@ -24,6 +24,7 @@ public class LCS_DP {
 			Arrays.fill(val, -1);
 		}
 		System.out.println(LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(s1, s2, 0, 0, strg2));
+		System.out.println(LCSBU(s1, s2));
 	}
 
 	private static int LCSRecursive(String s1, String s2) {
@@ -113,10 +114,10 @@ public class LCS_DP {
 		}
 	}
 
-	
-	
-	//THE CODE GIVEN BELOW IS HELPFUL TO ERADICATE TWO MEANINGS TO 0 VALUE OF CELL WHEREIN THE DISCREPANCY OF RESULT NOT YET EVALUATED
-	//AND THE LENGTH OF LCS = 0 IS DISTINGUISHED, OR ELSE THIS DISCREPANCY SIMPLY FAILED THE DP TO EXECUTE
+	// THE CODE GIVEN BELOW IS HELPFUL TO ERADICATE TWO MEANINGS TO 0 VALUE OF CELL
+	// WHEREIN THE DISCREPANCY OF RESULT NOT YET EVALUATED
+	// AND THE LENGTH OF LCS = 0 IS DISTINGUISHED, OR ELSE THIS DISCREPANCY SIMPLY
+	// FAILED THE DP TO EXECUTE
 	private static int LCSRecursiveTopDownOnceAgainWithNewMeaningToCell(String s1, String s2, int vidx1, int vidx2,
 			int strg[][]) {
 
@@ -137,4 +138,22 @@ public class LCS_DP {
 		}
 
 	}
+
+	private static int LCSBU(String s1, String s2) {
+		int strg[][] = new int[s1.length() + 1][s2.length() + 1];
+//		for (int val[] : strg) {
+//			Arrays.fill(val, -1);
+//		}
+
+		for (int row = s1.length() - 1; row >= 0; row--) {
+			for (int col = s2.length() - 1; col >= 0; col--) {
+				if (s1.charAt(row) == s2.charAt(col)) {
+					strg[row][col] = strg[row + 1][col + 1] + 1;
+				} else
+					strg[row][col] = Math.max(strg[row + 1][col], strg[row][col + 1]);
+			}
+		}
+		return strg[0][0];
+	}
+
 }
