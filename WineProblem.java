@@ -4,10 +4,12 @@ public class WineProblem {
 
 	public static void main(String[] args) {
 		int arr[] = { 2, 3, 5, 1, 4 };
-
-		System.out.println("The answer via regular recursive code is: "+WineProbRecursive(arr, 0, arr.length - 1));
-		System.out.println("The answer via regular top down dp code is: "+WineProbTopDown(arr, 0, arr.length - 1, new int[arr.length][arr.length]));
-		System.out.println("The answer via regular bottom up code is: "+WineProbBottomUpMyCode(arr));
+//	
+		System.out.println("The answer via regular recursive code is: " + WineProbRecursive(arr, 0, arr.length - 1));
+		System.out.println("The answer via regular top down dp code is: "
+				+ WineProbTopDown(arr, 0, arr.length - 1, new int[arr.length][arr.length]));
+		System.out.println("The answer via regular bottom up code is: " + WineProbBottomUpMyCode(arr));
+		System.out.println("The answer via optimal bottom up code is: " + WineProbBottomUpOptimalGCM(arr));
 	}
 
 	private static int WineProbRecursive(int arr[], int si, int ei) {
@@ -70,5 +72,22 @@ public class WineProblem {
 			}
 		}
 		return strg[0][arr.length - 1];
+	}
+
+	private static int WineProbBottomUpOptimalGCM(int arr[]) {
+		int strg[][] = new int[arr.length][arr.length];
+		int year;
+		for (int slide = 0; slide < arr.length; slide++) {
+			for (int si = 0; si <= arr.length - slide - 1; si++) {
+				int ei = si + slide;
+				year = arr.length - (ei - si + 1) + 1;
+				if (si == ei)
+					strg[si][ei] = arr[si] * year;
+				else
+					strg[si][ei] = Math.max(strg[si + 1][ei] + arr[si] * year, strg[si][ei - 1] + arr[ei] * year);
+			}
+		}
+		return strg[0][arr.length - 1];
+
 	}
 }
