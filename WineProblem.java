@@ -5,8 +5,9 @@ public class WineProblem {
 	public static void main(String[] args) {
 		int arr[] = { 2, 3, 5, 1, 4 };
 
-		System.out.println(WineProbRecursive(arr, 0, arr.length - 1));
-		System.out.println(WineProbTopDown(arr, 0, arr.length - 1, new int[arr.length][arr.length]));
+		System.out.println("The answer via regular recursive code is: "+WineProbRecursive(arr, 0, arr.length - 1));
+		System.out.println("The answer via regular top down dp code is: "+WineProbTopDown(arr, 0, arr.length - 1, new int[arr.length][arr.length]));
+		System.out.println("The answer via regular bottom up code is: "+WineProbBottomUpMyCode(arr));
 	}
 
 	private static int WineProbRecursive(int arr[], int si, int ei) {
@@ -41,5 +42,33 @@ public class WineProblem {
 		int rightCall = WineProbTopDown(arr, si, ei - 1, strg);
 
 		return strg[si][ei] = Math.max(leftCall + arr[si] * year, rightCall + arr[ei] * year);
+	}
+
+	private static int WineProbBottomUpMyCode(int arr[]) {
+		int strg[][] = new int[arr.length][arr.length];
+
+		// si is denoted on rows, and ei is denoted on columns.
+
+		for (int row = arr.length - 1; row >= 0; row--) {
+			for (int col = 0; col < arr.length; col++) {
+				int year = arr.length - (col - row + 1) + 1;
+				if (row == col)
+					strg[row][col] = arr[row] * year;
+			}
+		}
+
+		for (int row = arr.length - 1; row >= 0; row--) {
+			for (int col = 0; col < arr.length; col++) {
+				int year = arr.length - (col - row + 1) + 1;
+				if (row > col || row == col)
+					continue;
+				else {
+					strg[row][col] = Math.max(strg[row + 1][col] + arr[row] * year,
+							strg[row][col - 1] + arr[col] * year);
+				}
+
+			}
+		}
+		return strg[0][arr.length - 1];
 	}
 }
