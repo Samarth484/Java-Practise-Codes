@@ -3,11 +3,9 @@ package DyamicProgramming;
 public class WineProblem {
 
 	public static void main(String[] args) {
-//		int arr[] = { 2,3,5,1,4 };
-		int arr[] = new int[1000];
-		for (int i = 1; i <= 999; i++)
-			arr[i] = i;
-//		System.out.println(WineProbRecursive(arr, 0, arr.length - 1, 1));
+		int arr[] = { 2,3,5,1,4 };
+	
+		System.out.println(WineProbRecursive(arr, 0, arr.length - 1, 1));
 		System.out.println(WineProbTopDown(arr, 0, arr.length - 1, 1, new int[arr.length][arr.length]));
 	}
 
@@ -21,6 +19,16 @@ public class WineProblem {
 		return Math.max(leftCall + arr[si] * year, rightCall + arr[ei] * year);
 	}
 
+	
+	
+//	the code below will work perfectly fine for very large sized array for eg had arr been like so:
+//	
+//	int arr[] = new int[1000];
+//	for (int i = 1; i <= 999; i++)
+//		arr[i] = i;
+//	
+//	then in that case WineProbRecursive would have failed but WineProbTopDown will succeed because it follows DP and hence takes care of
+//	overlapping sub-problems!
 	private static int WineProbTopDown(int arr[], int si, int ei, int year, int strg[][]) {
 		if (si == ei) {
 			return arr[si] * year;
