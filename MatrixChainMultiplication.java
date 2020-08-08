@@ -7,21 +7,22 @@ public class MatrixChainMultiplication {
 		System.out.println(MCMmyCode(arr, 0, arr.length - 1));
 	}
 
-	private static void display(int arr[]) {
-		for (int val : arr)
-			System.out.print(val + " ");
-		System.out.println();
-	}
-
 	private static int MCMmyCode(int arr[], int si, int ei) {
-		int min = Integer.MAX_VALUE;
-		if (si + 1 == ei) {
 
+		if (si + 1 == ei)
 			return 0;
-		}
+
+		int min = Integer.MAX_VALUE;
 
 		for (int k = si + 1; k <= ei - 1; k++) {
-			int total = MCMmyCode(arr, si, k) + MCMmyCode(arr, k, ei) + arr[si] * arr[k] * arr[ei];
+
+			int firstPartition = MCMmyCode(arr, si, k); // arr[si]*arr[k]
+			int secondPartition = MCMmyCode(arr, k, ei); // arr[k]*arr[ei]
+
+			int sw = arr[si] * arr[k] * arr[ei]; // self work
+
+			int total = firstPartition + secondPartition + sw;
+
 			if (total < min)
 				min = total;
 		}
