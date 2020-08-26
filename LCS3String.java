@@ -1,15 +1,23 @@
 package DyamicProgramming;
 
+import java.util.Scanner;
+
 public class LCS3String {
+	static Scanner scn = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		String s1 = "AGGT12";
-		String s2 = "12TXAYB";
-		String s3 = "12XBA";
+
+//		String s1 = scn.nextLine();
+//		String s2 = scn.nextLine();
+//		String s3 = scn.nextLine();
+		String s1 = "GHQWNV";
+		String s2 = "SJNSDGH";
+		String s3 = "CPGMAH";
 		System.out.println(LCS3Str(s1, s2, s3));
 		System.out.println(LCS3SrtingsWithVIDX(s1, s2, s3, 0, 0, 0));
 		System.out
 				.println(LCS3StringTD(s1, s2, s3, 0, 0, 0, new int[s1.length() + 1][s2.length() + 1][s3.length() + 1]));
+		System.out.println(LCS3StringBU(s1, s2, s3));
 	}
 
 	private static int LCS3Str(String s1, String s2, String s3) {
@@ -57,5 +65,26 @@ public class LCS3String {
 							LCS3StringTD(s1, s2, s3, vidx1, vidx2 + 1, vidx3, strg)),
 					LCS3StringTD(s1, s2, s3, vidx1, vidx2, vidx3 + 1, strg));
 
+	}
+
+	private static int LCS3StringBU(String s1, String s2, String s3) {
+		int strg[][][] = new int[s1.length() + 1][s2.length() + 1][s3.length() + 1];
+
+		for (int Lps1 = s1.length() - 1; Lps1 >= 0; Lps1--) {
+			for (int Lps2 = s2.length() - 1; Lps2 >= 0; Lps2--) {
+				for (int Lps3 = s3.length()-1; Lps3 >= 0; Lps3--) {
+
+					if (s1.charAt(Lps1) == s2.charAt(Lps2) && s2.charAt(Lps2) == s3.charAt(Lps3)) {
+						strg[Lps1][Lps2][Lps3] = strg[Lps1 + 1][Lps2 + 1][Lps3 + 1] + 1;
+					} else {
+						int o1 = strg[Lps1 + 1][Lps2][Lps3];
+						int o2 = strg[Lps1][Lps2 + 1][Lps3];
+						int o3 = strg[Lps1][Lps2][Lps3 + 1];
+						strg[Lps1][Lps2][Lps3] = Math.max(o1, Math.max(o2, o3));
+					}
+				}
+			}
+		}
+		return strg[0][0][0];
 	}
 }
