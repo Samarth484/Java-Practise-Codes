@@ -4,10 +4,10 @@ public class MinimumJumpsRequired {
 
 	public static void main(String[] args) {
 		System.out.println();
-//		int arr[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		int arr[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 //		int arr[] = { 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 //		int arr[] = { 1, 3, 6, 3, 2, 3, 6, 8, 9, 5 };
-		int arr[] = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
+//		int arr[] = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
 //		int arr[] = { 2, 3, 1, 1, 2, 4, 2, 0, 1, 1 };
 //		int arr[] = new int[1100];
 //		for (int i = 0; i < arr.length; i++)
@@ -23,8 +23,7 @@ public class MinimumJumpsRequired {
 //		System.out.println(MinJumpsDP(arr, 0, new int[arr.length]));
 //		end = System.currentTimeMillis();
 //		System.out.println("Time taken = " + (end - start) + "ms");
-		
-		
+
 		start = System.currentTimeMillis();
 		System.out.println(MinJumpsBU(arr));
 		end = System.currentTimeMillis();
@@ -89,6 +88,8 @@ public class MinimumJumpsRequired {
 			}
 
 		}
+		if (strg[0] < 0)
+			return Integer.MAX_VALUE;
 		return strg[0];
 	}
 }
