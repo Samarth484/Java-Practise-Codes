@@ -4,7 +4,7 @@ public class MinimumJumpsRequired {
 
 	public static void main(String[] args) {
 		System.out.println();
-		int arr[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		int arr[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 //		int arr[] = { 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 //		int arr[] = { 1, 3, 6, 3, 2, 3, 6, 8, 9, 5 };
 //		int arr[] = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
@@ -27,8 +27,8 @@ public class MinimumJumpsRequired {
 		start = System.currentTimeMillis();
 		System.out.println(MinJumpsBU(arr));
 		end = System.currentTimeMillis();
-		System.out.println("Time taken = " + (end - start) + "ms");
-		System.out.println(Integer.MIN_VALUE);
+//		System.out.println("Time taken = " + (end - start) + "ms");
+//		System.out.println(Integer.MIN_VALUE);
 
 	}
 
@@ -77,19 +77,65 @@ public class MinimumJumpsRequired {
 		int strg[] = new int[arr.length];
 
 		for (int i = arr.length - 2; i >= 0; i--) {
-
-			if (arr[i] >= arr.length - i)
+			if (arr[i] == 0) {
+				strg[i] = Integer.MAX_VALUE;
+				continue;
+			}
+			if (arr[i] >= arr.length - 1 - i)
 				strg[i] = 1;
 			else {
 				int min = Integer.MAX_VALUE;
-				for (int j = i + 1; j < i + 1 + arr[i]; j++)
+				for (int j = i + 1; j < i + 1 + arr[i]; j++) {
+
+					if (strg[j] == Integer.MAX_VALUE)
+						continue;
+
 					min = Math.min(min, strg[j]);
-				strg[i] = min + 1;
+				}
+				if (min == Integer.MAX_VALUE)
+					strg[i] = min;
+				else
+					strg[i] = min + 1;
 			}
 
 		}
-		if (strg[0] < 0)
-			return Integer.MAX_VALUE;
+//		if (strg[0] < 0)
+//			return Integer.MAX_VALUE;
+		return strg[0];
+	}
+
+	
+	private static int MinJumpsBU_MyCode_That_Passed_GFG(int arr[]) {
+		if (arr[0] == 0)
+			return -1;
+
+		int strg[] = new int[arr.length];
+
+		for (int i = arr.length - 2; i >= 0; i--) {
+			if (arr[i] == 0) {
+				strg[i] = -1;
+				continue;
+			}
+			if (arr[i] >= arr.length - 1 - i)
+				strg[i] = 1;
+			else {
+				int min = Integer.MAX_VALUE;
+				for (int j = i + 1; j < i + 1 + arr[i]; j++) {
+
+					if (strg[j] == -1)
+						continue;
+
+					min = Math.min(min, strg[j]);
+				}
+				if (min <= 0 || min == Integer.MAX_VALUE)
+					strg[i] = -1;
+				else
+					strg[i] = min + 1;
+			}
+
+		}
+		// if (strg[0] < 0)
+		// return -1;
 		return strg[0];
 	}
 }
