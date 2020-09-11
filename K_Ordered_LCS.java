@@ -1,5 +1,6 @@
 package DyamicProgramming;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class K_Ordered_LCS {
@@ -25,7 +26,16 @@ public class K_Ordered_LCS {
 		for (int i = 0; i < m; i++)
 			arr2[i] = scn.nextInt();
 
+		int strg[][][] = new int[k + 1][arr1.length + 1][arr2.length + 1];
+		for (int i = 0; i < strg.length; i++) {
+			
+			for (int j = 0; j < strg[0].length; j++)
+				Arrays.fill(strg[i][j], -1);
+		
+		}
+
 		System.out.println(KOrderedLCSRecursiveMine(arr1, arr2, k, 0, 0));
+		System.out.println(KOrderedLCSTopDownMine(arr1, arr2, k, 0, 0, strg));
 
 	}
 
@@ -46,6 +56,27 @@ public class K_Ordered_LCS {
 			ans = Math.max(o1, Math.max(o2, o3));
 		}
 		return ans;
+	}
+
+	public static int KOrderedLCSTopDownMine(int arr1[], int arr2[], int k, int vidx1, int vidx2, int strg[][][]) {
+
+		if (vidx1 == arr1.length || vidx2 == arr2.length)
+			return 0;
+		int ans = 0;
+		if (strg[k][vidx1][vidx2] != -1)
+			return strg[k][vidx1][vidx2];
+		if (arr1[vidx1] == arr2[vidx2])
+			ans = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2 + 1) + 1;
+		else {
+			int o1 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1, vidx2 + 1);
+			int o2 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2);
+			int o3 = 0;
+			if (k >= 1)
+				o3 = KOrderedLCSRecursiveMine(arr1, arr2, k - 1, vidx1 + 1, vidx2 + 1) + 1;
+
+			ans = Math.max(o1, Math.max(o2, o3));
+		}
+		return strg[k][vidx1][vidx2] = ans;
 	}
 
 }
