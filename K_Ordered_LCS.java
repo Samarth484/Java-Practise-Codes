@@ -7,12 +7,7 @@ public class K_Ordered_LCS {
 	static Scanner scn = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		System.out.println();
-//		The first line contains three integers N, M and k
-//		denoting the lengths of the first and second sequences and the value of the provided parameter respectively.
-//		The second line contains N integers denoting the elements of the first sequence. 
-//		The third line contains M integers denoting the elements of the second sequence.
-
+System.out.println();
 		int n = scn.nextInt();
 		int m = scn.nextInt();
 		int k = scn.nextInt();
@@ -28,34 +23,15 @@ public class K_Ordered_LCS {
 
 		int strg[][][] = new int[k + 1][arr1.length + 1][arr2.length + 1];
 		for (int i = 0; i < strg.length; i++) {
-			
+
 			for (int j = 0; j < strg[0].length; j++)
 				Arrays.fill(strg[i][j], -1);
-		
+
 		}
 
-		System.out.println(KOrderedLCSRecursiveMine(arr1, arr2, k, 0, 0));
+//		System.out.println(KOrderedLCSRecursiveMine(arr1, arr2, k, 0, 0));
 		System.out.println(KOrderedLCSTopDownMine(arr1, arr2, k, 0, 0, strg));
 
-	}
-
-	public static int KOrderedLCSRecursiveMine(int arr1[], int arr2[], int k, int vidx1, int vidx2) {
-
-		if (vidx1 == arr1.length || vidx2 == arr2.length)
-			return 0;
-		int ans = 0;
-		if (arr1[vidx1] == arr2[vidx2])
-			ans = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2 + 1) + 1;
-		else {
-			int o1 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1, vidx2 + 1);
-			int o2 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2);
-			int o3 = 0;
-			if (k >= 1)
-				o3 = KOrderedLCSRecursiveMine(arr1, arr2, k - 1, vidx1 + 1, vidx2 + 1) + 1;
-
-			ans = Math.max(o1, Math.max(o2, o3));
-		}
-		return ans;
 	}
 
 	public static int KOrderedLCSTopDownMine(int arr1[], int arr2[], int k, int vidx1, int vidx2, int strg[][][]) {
@@ -66,13 +42,13 @@ public class K_Ordered_LCS {
 		if (strg[k][vidx1][vidx2] != -1)
 			return strg[k][vidx1][vidx2];
 		if (arr1[vidx1] == arr2[vidx2])
-			ans = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2 + 1) + 1;
+			ans = KOrderedLCSTopDownMine(arr1, arr2, k, vidx1 + 1, vidx2 + 1, strg) + 1;
 		else {
-			int o1 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1, vidx2 + 1);
-			int o2 = KOrderedLCSRecursiveMine(arr1, arr2, k, vidx1 + 1, vidx2);
+			int o1 = KOrderedLCSTopDownMine(arr1, arr2, k, vidx1, vidx2 + 1, strg);
+			int o2 = KOrderedLCSTopDownMine(arr1, arr2, k, vidx1 + 1, vidx2, strg);
 			int o3 = 0;
 			if (k >= 1)
-				o3 = KOrderedLCSRecursiveMine(arr1, arr2, k - 1, vidx1 + 1, vidx2 + 1) + 1;
+				o3 = KOrderedLCSTopDownMine(arr1, arr2, k - 1, vidx1 + 1, vidx2 + 1, strg) + 1;
 
 			ans = Math.max(o1, Math.max(o2, o3));
 		}
