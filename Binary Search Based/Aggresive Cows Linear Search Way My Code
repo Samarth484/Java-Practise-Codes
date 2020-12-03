@@ -1,0 +1,45 @@
+package LeetCode;
+
+import java.util.Arrays;
+
+public class AggresiveCows {
+
+	public static void main(String[] args) {
+		int disArr[] = { 1, 2, 8, 4, 9 };
+//		int disArr[] = { 1, 2, 3, 4, 7 };
+//		int disArr[] = { 5, 4, 3, 2, 1, 1000000000 };
+		int noCow = 3;
+//		int noCow = 2;
+		Arrays.sort(disArr);
+		int maxDis = findMaxDis(disArr, noCow);
+		System.out.println(maxDis);
+	}
+
+	private static int findMaxDis(int[] arr, int noCow) {
+		int totalLength = arr[arr.length - 1] - arr[0];
+		for (int currMaxDis = 0; currMaxDis <= totalLength; currMaxDis++) {
+
+			boolean isSafe = isIsafe(arr, noCow, currMaxDis);
+
+			if (!isSafe)
+				return currMaxDis == 0 ? currMaxDis : currMaxDis - 1;
+
+		}
+		return totalLength;
+	}
+
+	private static boolean isIsafe(int[] arr, int noCow, int currMaxDis) {
+		int cowsPlaced = 0;
+		int lastPlacedAt = 0;
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[i] - arr[lastPlacedAt] >= currMaxDis) {
+				lastPlacedAt = i;
+				++cowsPlaced;
+				if (cowsPlaced >= noCow - 1)
+					return true;
+			}
+		}
+		return false;
+	}
+
+}
